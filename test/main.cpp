@@ -32,7 +32,6 @@ int main(){
     cout << endl;
     delete[] inOrder;
 
-    // Check if the tree has the sequence 1, 2, 3, 4, 5, 6
     int seq[] = {1, 2, 3, 4, 5, 6};
     cout << "Does the tree have the sequence 1, 2, 3, 4, 5, 6? " << endl;
     if (tree.hasSequence(seq, 6)){
@@ -41,7 +40,6 @@ int main(){
         cout << "No" << endl;
     } 
 
-    // Check if the tree has the sequence 10, 12, 13, 15
     int seq2[] = {10, 12, 13, 15};
     cout << "Does the tree have the sequence 10, 12, 13, 15? " << endl;
     if (tree.hasSequence(seq2, 4)){
@@ -50,7 +48,6 @@ int main(){
         cout << "No" << endl;
     }
 
-    // Check if the tree has the sequence 10, 11, 12
     int seq3[] = {10, 11, 12};
     cout << "Does the tree have the sequence 10, 11, 12? " << endl;
     if (tree.hasSequence(seq3, 3)){
