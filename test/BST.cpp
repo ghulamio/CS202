@@ -40,27 +40,43 @@ int* BST::inOrderTraversal(int& length){
 
 bool BST::hasSequence(int* seq, int length){
     int index = 0;
-    return hasSequenceRecursive(seq, length, index, root);
+    // Find the min and max in the sequence
+    int min = seq[0];
+    int max = seq[length-1];
+
+    return hasSequenceRecursive(seq, length, index, root, min, max);
 }
 
-bool BST::hasSequenceRecursive(int* seq, int length, int& index, BSTNode* node){
-    if (node == nullptr || index >= length){
+bool BST::hasSequenceRecursive(int* seq, int length, int& index, BSTNode* node, int min, int max){
+    cout << "Current node: " << node->item << endl;
+    cout << "Min value: " << min << endl;
+    cout << "Max value: " << max << endl;
+    if (node == nullptr){
         return false;
     }
-    cout << "Checking node: " << node->item << endl;
-    if (node -> item == seq[index]){
+    // Only traverse the left subtree if the current node is greater than the min value
+    if (node->item > min){
+        if (hasSequenceRecursive(seq, length, index, node->left, min, max)){
+            return true;
+        }
+    }
+    // Only traverse the right subtree if the current node is less than the max value
+    if (node->item < max){
+        if (hasSequenceRecursive(seq, length, index, node->right, min, max)){
+            return true;
+        }
+    }
+    // If the current node is equal to the next value in the sequence, increment the index
+    if (node->item == seq[index]){
         index++;
+        // If the index is equal to the length of the sequence, the sequence was found
         if (index == length){
             return true;
         }
-    } else if (node -> item > seq[index]){
-        return hasSequenceRecursive(seq, length, index, node->left);
-    } else if (node -> item < seq[index]){
-        return hasSequenceRecursive(seq, length, index, node->right);
-    } else{
-        return false;
     }
+    return false;
 }
+
 
 
 BSTNode* BST::findMin(BSTNode *node){

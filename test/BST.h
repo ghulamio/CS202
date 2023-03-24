@@ -19,7 +19,7 @@ class BST{
         void recursiveInsertion(BSTNode *&node, int key);
         void recursiveDeletion(BSTNode *&node, int key);
         int* recursiveTraversal(BSTNode *node, int& size);
-        bool hasSequenceRecursive(int* seq, int length, int& index, BSTNode* node);
+        bool hasSequenceRecursive(int* seq, int length, int& index, BSTNode* node, int min, int max);
 }; 
 
 #endif
