@@ -58,7 +58,7 @@ bool BST::hasSequenceRecursive(int* seq, int length, int& index, BSTNode* node, 
         }
     }
 
-    // Check if current node is equal to current value in sequence, and [increment index](poe://www.poe.com/_api/key_phrase?phrase=increment%20index&prompt=Tell%20me%20more%20about%20increment%20index.) if it is
+    // Check if current node is equal to current value in sequence
     if (node->item == seq[index]){
         cout << node->item << " ";
         index++;
