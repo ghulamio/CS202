@@ -48,36 +48,32 @@ bool BST::hasSequence(int* seq, int length){
 }
 
 bool BST::hasSequenceRecursive(int* seq, int length, int& index, BSTNode* node, int min, int max){
-    cout << "Current node: " << node->item << endl;
-    cout << "Min value: " << min << endl;
-    cout << "Max value: " << max << endl;
-    if (node == nullptr){
+    if (node == nullptr || index == length){
         return false;
     }
-    // Only traverse the left subtree if the current node is greater than the min value
-    if (node->item > min){
-        if (hasSequenceRecursive(seq, length, index, node->left, min, max)){
+    // Traverse left subtree if current node is greater than min value in sequence
+    if (node->item > seq[index]){
+        if (hasSequenceRecursive(seq, length, index, node->left, min, node->item-1)){
             return true;
         }
     }
-    // Only traverse the right subtree if the current node is less than the max value
-    if (node->item < max){
-        if (hasSequenceRecursive(seq, length, index, node->right, min, max)){
-            return true;
-        }
-    }
-    // If the current node is equal to the next value in the sequence, increment the index
+
+    // Check if current node is equal to current value in sequence, and [increment index](poe://www.poe.com/_api/key_phrase?phrase=increment%20index&prompt=Tell%20me%20more%20about%20increment%20index.) if it is
     if (node->item == seq[index]){
+        cout << node->item << " ";
         index++;
-        // If the index is equal to the length of the sequence, the sequence was found
-        if (index == length){
+    }
+
+    // Traverse right subtree if current node is less than max value in sequence
+    if (node->item < seq[index]){
+        if (hasSequenceRecursive(seq, length, index, node->right, node->item+1, max)){
             return true;
         }
     }
+
+    // If none of the above cases return true, then the sequence is not a sub-array
     return false;
 }
-
-
 
 BSTNode* BST::findMin(BSTNode *node){
     while (node->left != nullptr){
