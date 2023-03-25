@@ -51,6 +51,10 @@ bool BST::hasSequenceRecursive(int* seq, int length, int& index, BSTNode* node, 
     if (node == nullptr || index == length){
         return false;
     }
+
+    // Print the current node
+    cout << node->item << " ";
+
     // Traverse left subtree if current node is greater than min value in sequence
     if (node->item > seq[index]){
         if (hasSequenceRecursive(seq, length, index, node->left, min, node->item-1)){
@@ -60,7 +64,6 @@ bool BST::hasSequenceRecursive(int* seq, int length, int& index, BSTNode* node, 
 
     // Check if current node is equal to current value in sequence
     if (node->item == seq[index]){
-        cout << node->item << " ";
         index++;
     }
 
