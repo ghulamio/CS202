@@ -127,12 +127,6 @@ bool BST::hasSequenceRecursive(int* seq, int* soFar, int& soFarLength, int lengt
 
     // Compare soFar to seq
     if (soFarLength >= length){
-        // // Remove the first element from soFar
-        // for (int i = 0; i < soFarLength - 1; i++){
-        //     soFar[i] = soFar[i + 1];
-        // }
-        // soFarLength--;
-        // Sort soFar
         sortArray(soFar, soFarLength);
         for (int i = 0; i < length; i++){
             if (soFar[i] != seq[i]){
