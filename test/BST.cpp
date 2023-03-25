@@ -45,8 +45,7 @@ bool BST::hasSequence(int* seq, int length){
     int soFarLength = 0;
 
     bool returnVal = hasSequenceRecursive(seq, soFar, soFarLength, length, index, root);
-    // Print soFar
-    printArray(soFar, soFarLength);
+    // printArray(soFar, soFarLength);
     delete[] soFar;
     return returnVal;
 }
@@ -77,19 +76,23 @@ bool BST::hasSequenceRecursive(int* seq, int* soFar, int& soFarLength, int lengt
         return false;
     }
 
-    // Print the current node and add it to the soFar array only if it is not already in the array
+    // Print the current node and add it to the soFar array only if it is not already in the array and not the root
     cout << node->item << " ";
-    bool alreadyInSoFar = false;
-    for (int i = 0; i < soFarLength; i++){
-        if (soFar[i] == node->item){
-            alreadyInSoFar = true;
-            break;
+
+    if (node->item != root->item){
+        bool alreadyInSoFar = false;
+        for (int i = 0; i < soFarLength; i++){
+            if (soFar[i] == node->item){
+                alreadyInSoFar = true;
+                break;
+            }
+        }
+        if (!alreadyInSoFar){
+            soFar[soFarLength] = node->item;
+            soFarLength++;
         }
     }
-    if (!alreadyInSoFar){
-        soFar[soFarLength] = node->item;
-        soFarLength++;
-    }
+
 
     // Traverse left subtree if current node is greater than min value in sequence
     if (index < length && node->item > seq[index]){
@@ -123,12 +126,12 @@ bool BST::hasSequenceRecursive(int* seq, int* soFar, int& soFarLength, int lengt
     }
 
     // Compare soFar to seq
-    if (soFarLength == length+1){
-        // Remove the first element from soFar
-        for (int i = 0; i < soFarLength - 1; i++){
-            soFar[i] = soFar[i + 1];
-        }
-        soFarLength--;
+    if (soFarLength >= length){
+        // // Remove the first element from soFar
+        // for (int i = 0; i < soFarLength - 1; i++){
+        //     soFar[i] = soFar[i + 1];
+        // }
+        // soFarLength--;
         // Sort soFar
         sortArray(soFar, soFarLength);
         for (int i = 0; i < length; i++){
