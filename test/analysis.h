@@ -1,14 +1,16 @@
+/**
+* Title: Binary Search Trees
+* Author : Ghulam Ahmed
+* ID: 22101001
+* Section : 2
+* Homework : 2
+* Description :  HW2 - Binary Search Trees
+*/
+
+#ifndef ANALYSIS_H
+#define ANALYSIS_H
+
 #include "BST.h"
-
-#include <iostream>
-using namespace std;
-
-
-// Write a global function, void timeAnalysis(), which does the following:
-// ● Creates an array of 15000 random numbers and starts inserting them into an empty pointer based BST. 
-// At each 1500 insertions, outputs the time elapsed for those insertions (use clock from ctime for calculating elapsed time).
-// ● Shuffles the array created in the previous part. Then iterates over it and deletes the numbers from the tree. 
-// After each 1500 deletions, outputs the time elapsed for the deletion.
 
 class analysis{
     public:
@@ -23,3 +25,5 @@ class analysis{
         void printArray();
         void deleteArray();
 };
+
+#endif

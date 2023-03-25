@@ -1,3 +1,12 @@
+# /**
+# * Title: Binary Search Trees
+# * Author : Ghulam Ahmed
+# * ID: 22101001
+# * Section : 2
+# * Homework : 2
+# * Description :  HW2 - Binary Search Trees
+# */
+
 # Compiler to use
 CXX = g++
 

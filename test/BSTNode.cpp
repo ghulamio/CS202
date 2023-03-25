@@ -1,7 +1,13 @@
-#include "BSTNode.h"
+/**
+* Title: Binary Search Trees
+* Author : Ghulam Ahmed
+* ID: 22101001
+* Section : 2
+* Homework : 2
+* Description :  HW2 - Binary Search Trees
+*/
 
-BSTNode::BSTNode(){
-}
+#include "BSTNode.h"
 
 BSTNode::BSTNode(const int item, BSTNode* left, BSTNode* right){
     this->item = item;

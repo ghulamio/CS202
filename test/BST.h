@@ -1,3 +1,12 @@
+/**
+* Title: Binary Search Trees
+* Author : Ghulam Ahmed
+* ID: 22101001
+* Section : 2
+* Homework : 2
+* Description :  HW2 - Binary Search Trees
+*/
+
 #ifndef BST_H
 #define BST_H
 
@@ -9,7 +18,6 @@ class BST{
         ~BST();
         void insertItem(int key);
         void deleteItem(int key);
-        BSTNode* getItem(int key);
         int* inOrderTraversal(int& length);
         bool hasSequence(int* seq, int length);
     private:

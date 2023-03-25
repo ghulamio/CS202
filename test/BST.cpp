@@ -1,3 +1,12 @@
+/**
+* Title: Binary Search Trees
+* Author : Ghulam Ahmed
+* ID: 22101001
+* Section : 2
+* Homework : 2
+* Description :  HW2 - Binary Search Trees
+*/
+
 #include "BST.h"
 
 #include <iostream>
@@ -19,20 +28,6 @@ void BST::deleteItem(int key){
     recursiveDeletion(root, key);
 }
 
-BSTNode* BST::getItem(int key){
-    BSTNode* node = root;
-    while (node != nullptr){
-        if (key < node->item){
-            node = node->left;
-        } else if (key > node->item){
-            node = node->right;
-        } else{
-            return node;
-        }
-    }
-    return nullptr;
-}
-
 int* BST::inOrderTraversal(int& length){
     length = 0;
     return recursiveTraversal(root, length);
@@ -40,12 +35,10 @@ int* BST::inOrderTraversal(int& length){
 
 bool BST::hasSequence(int* seq, int length){
     int index = 0;
-    // Find the min and max in the sequence
     int* soFar = new int[length];
     int soFarLength = 0;
 
     bool returnVal = hasSequenceRecursive(seq, soFar, soFarLength, length, index, root);
-    // printArray(soFar, soFarLength);
     delete[] soFar;
     return returnVal;
 }
@@ -71,12 +64,10 @@ void BST::sortArray(int* arr, int length){
 }
 
 bool BST::hasSequenceRecursive(int* seq, int* soFar, int& soFarLength, int length, int& index, BSTNode* node){
-    // if (node == nullptr || index == length){
     if (node == nullptr){ 
         return false;
     }
 
-    // Print the current node and add it to the soFar array only if it is not already in the array and not the root
     cout << node->item << " ";
 
     if (node->item != root->item){
@@ -103,8 +94,6 @@ bool BST::hasSequenceRecursive(int* seq, int* soFar, int& soFarLength, int lengt
 
     // Check if current node is equal to current value in sequence
     if (node->item == seq[index]){
-        // soFar[soFarLength] = node->item;
-        // soFarLength++;
         index++;
         // Continue traversing right and left subtrees
         if (node->item < seq[index]){

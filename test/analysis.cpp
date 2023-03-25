@@ -1,3 +1,12 @@
+/**
+* Title: Binary Search Trees
+* Author : Ghulam Ahmed
+* ID: 22101001
+* Section : 2
+* Homework : 2
+* Description :  HW2 - Binary Search Trees
+*/
+
 #include "analysis.h"
 #include <ctime>
 #include <cstdlib>
@@ -43,7 +52,7 @@ void analysis::timeAnalysis(){
             printElement(elapsed, 8);
             printElement("ms", 5);
             cout << endl;
-            start = clock();
+            // start = clock();
         }
     }
     shuffleArray();
@@ -54,19 +63,17 @@ void analysis::timeAnalysis(){
     printElement("Time elapsed", 20);
     cout << endl;
     cout << linebreak << endl;
-    start = clock();
-    for (int i = length; i > 0; i--){
+    clock_t start1 = clock();
+    for (int i = 0; i < length; i++){
         tree->deleteItem(array[i]);
         if ((i + 1) % 1500 == 0){
-            clock_t end = clock();
-            double elapsed = double(end - start) / (CLOCKS_PER_SEC / 1000);
-            if (i < 13501){
-                    printElement(i + 1, 20);
-                    printElement(elapsed, 8);
-                    printElement("ms", 5);
-                    cout << endl;
-            }
-            start = clock();
+            clock_t end1 = clock();
+            double elapsed = double(end1 - start1) / (CLOCKS_PER_SEC / 1000);
+            printElement(i + 1, 20);
+            printElement(elapsed, 8);
+            printElement("ms", 5);
+            cout << endl;
+            // start = clock();
         }
     }
 }
