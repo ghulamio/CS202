@@ -43,38 +43,62 @@ bool BST::hasSequence(int* seq, int length){
     // Find the min and max in the sequence
     int min = seq[0];
     int max = seq[length-1];
+    int* soFar = new int[length];
+    int soFarLength = 0;
 
-    return hasSequenceRecursive(seq, length, index, root, min, max);
+    bool returnVal = hasSequenceRecursive(seq, soFar, soFarLength, length, index, root, min, max);
+    // Print soFar
+    printArray(soFar, soFarLength);
+    delete[] soFar;
+    return returnVal;
 }
 
-bool BST::hasSequenceRecursive(int* seq, int length, int& index, BSTNode* node, int min, int max){
-    if (node == nullptr || index == length){
+void BST::printArray(int* arr, int length){
+    cout << endl << "Array: ";
+    for (int i = 0; i < length; i++){
+        cout << arr[i] << " ";
+    }
+    cout << endl;
+}
+
+bool BST::hasSequenceRecursive(int* seq, int* soFar, int& soFarLength, int length, int& index, BSTNode* node, int min, int max){
+    // if (node == nullptr || index == length){
+    if (node == nullptr){ 
         return false;
     }
 
-    // Print the current node
+    // Print the current node and add it to the soFar array
     cout << node->item << " ";
 
     // Traverse left subtree if current node is greater than min value in sequence
     if (node->item > seq[index]){
-        if (hasSequenceRecursive(seq, length, index, node->left, min, node->item-1)){
+        if (hasSequenceRecursive(seq, soFar, soFarLength, length, index, node->left, min, node->item-1)){
             return true;
         }
     }
 
     // Check if current node is equal to current value in sequence
     if (node->item == seq[index]){
+        soFar[soFarLength] = node->item;
+        soFarLength++;
         index++;
-    }
-
-    // Traverse right subtree if current node is less than max value in sequence
-    if (node->item < seq[index]){
-        if (hasSequenceRecursive(seq, length, index, node->right, node->item+1, max)){
+        // Compare soFar to seq
+        if (soFarLength == length){
+            for (int i = 0; i < length; i++){
+                if (soFar[i] != seq[i]){
+                    return false;
+                }
+            }
             return true;
         }
     }
 
-    // If none of the above cases return true, then the sequence is not a sub-array
+    // Traverse right subtree if current node is less than max value in sequence
+    if (node->item < seq[index]){
+        if (hasSequenceRecursive(seq, soFar, soFarLength, length, index, node->right, node->item+1, max)){
+            return true;
+        }
+    }
     return false;
 }
 
