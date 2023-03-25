@@ -41,12 +41,10 @@ int* BST::inOrderTraversal(int& length){
 bool BST::hasSequence(int* seq, int length){
     int index = 0;
     // Find the min and max in the sequence
-    int min = seq[0];
-    int max = seq[length-1];
     int* soFar = new int[length];
     int soFarLength = 0;
 
-    bool returnVal = hasSequenceRecursive(seq, soFar, soFarLength, length, index, root, min, max);
+    bool returnVal = hasSequenceRecursive(seq, soFar, soFarLength, length, index, root);
     // Print soFar
     printArray(soFar, soFarLength);
     delete[] soFar;
@@ -61,43 +59,84 @@ void BST::printArray(int* arr, int length){
     cout << endl;
 }
 
-bool BST::hasSequenceRecursive(int* seq, int* soFar, int& soFarLength, int length, int& index, BSTNode* node, int min, int max){
+void BST::sortArray(int* arr, int length){
+    for (int i = 0; i < length; i++){
+        for (int j = i + 1; j < length; j++){
+            if (arr[i] > arr[j]){
+                int temp = arr[i];
+                arr[i] = arr[j];
+                arr[j] = temp;
+            }
+        }
+    }
+}
+
+bool BST::hasSequenceRecursive(int* seq, int* soFar, int& soFarLength, int length, int& index, BSTNode* node){
     // if (node == nullptr || index == length){
     if (node == nullptr){ 
         return false;
     }
 
-    // Print the current node and add it to the soFar array
+    // Print the current node and add it to the soFar array only if it is not already in the array
     cout << node->item << " ";
+    bool alreadyInSoFar = false;
+    for (int i = 0; i < soFarLength; i++){
+        if (soFar[i] == node->item){
+            alreadyInSoFar = true;
+            break;
+        }
+    }
+    if (!alreadyInSoFar){
+        soFar[soFarLength] = node->item;
+        soFarLength++;
+    }
 
     // Traverse left subtree if current node is greater than min value in sequence
-    if (node->item > seq[index]){
-        if (hasSequenceRecursive(seq, soFar, soFarLength, length, index, node->left, min, node->item-1)){
+    if (index < length && node->item > seq[index]){
+        if (hasSequenceRecursive(seq, soFar, soFarLength, length, index, node->left)){
             return true;
         }
     }
 
     // Check if current node is equal to current value in sequence
     if (node->item == seq[index]){
-        soFar[soFarLength] = node->item;
-        soFarLength++;
+        // soFar[soFarLength] = node->item;
+        // soFarLength++;
         index++;
-        // Compare soFar to seq
-        if (soFarLength == length){
-            for (int i = 0; i < length; i++){
-                if (soFar[i] != seq[i]){
-                    return false;
-                }
+        // Continue traversing right and left subtrees
+        if (node->item < seq[index]){
+            if (hasSequenceRecursive(seq, soFar, soFarLength, length, index, node->right)){
+                return true;
             }
-            return true;
+        } else {
+            if (hasSequenceRecursive(seq, soFar, soFarLength, length, index, node->left)){
+                return true;
+            }
         }
     }
 
     // Traverse right subtree if current node is less than max value in sequence
-    if (node->item < seq[index]){
-        if (hasSequenceRecursive(seq, soFar, soFarLength, length, index, node->right, node->item+1, max)){
+    if (index < length && node->item < seq[index]){
+        if (hasSequenceRecursive(seq, soFar, soFarLength, length, index, node->right)){
             return true;
         }
+    }
+
+    // Compare soFar to seq
+    if (soFarLength == length+1){
+        // Remove the first element from soFar
+        for (int i = 0; i < soFarLength - 1; i++){
+            soFar[i] = soFar[i + 1];
+        }
+        soFarLength--;
+        // Sort soFar
+        sortArray(soFar, soFarLength);
+        for (int i = 0; i < length; i++){
+            if (soFar[i] != seq[i]){
+                return false;
+            }
+        }
+        return true;
     }
     return false;
 }
