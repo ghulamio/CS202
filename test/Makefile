@@ -8,7 +8,7 @@ CXX = g++
 TARGET = hw2
 
 # Source files to compile
-SRCS = main.cpp BST.cpp BSTNode.cpp
+SRCS = main.cpp BST.cpp BSTNode.cpp analysis.cpp
 
 # Object files to create
 OBJS = $(SRCS:.cpp=.o)

@@ -1,4 +1,5 @@
 #include "BST.h"
+#include "analysis.h"
 
 #include <iostream>
 
@@ -105,6 +106,7 @@ int main(){
     cout << "Merged tree: ";
     printTree(tree4);
 
-
+    analysis a1;
+    a1.timeAnalysis();
     return 0;
 }
