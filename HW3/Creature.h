@@ -1,36 +1,37 @@
-#ifndef __CREATURE_H
-#define __CREATURE_H
+#ifndef _CREATURE_H
+#define _CREATURE_H
 
 #include<iostream>
+
 #include"Point2D.h"
 #include"Food.h"
+
+using namespace std;
 
 class Creature{
   public:
     Creature();
+    ~Creature();
     Creature(int id, double x, double y, int health);
     Creature(const Creature&);
-    ~Creature();
 
-    const Point2D& getCoordinate() const;
+    const Point2D& getPoint() const;
     const int getHealth() const;
-    const int getCreatureId() const;
-
-    double distanceFromCreature(const Creature&) const ;
-    double distanceFromFood(const Food&) const;
-
-    void increaseHealth(int increaseBy);
-    void decrementHealth();
-    void die();
+    double distanceBetween(const Creature&) const ;
+    double distanceBetween(const Food&) const;
     bool isAlive() const;
-    void moveForGameLoop(Vector& v, Point2D& p);
+
+    void regainHealth(int h);
+    void decrementHealth();
+    void killCreature();
+    void advance(Point2D& v, Point2D& p);
 
   private:
-    Point2D origin;
-    int creatureId;
+    Point2D point;
+    int id;
     int health;
 
-  friend std::ostream& operator<<(std::ostream&, Creature&);
+  friend ostream& operator<<(ostream& o, Creature& c);
 };
 
 #endif

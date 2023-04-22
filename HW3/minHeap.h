@@ -7,19 +7,19 @@ class minHeap{
   private:
   Food* foods;
   int size;
-  int MAX_SIZE;
+  int capacity;
 
   public:
   minHeap() = default;
-  minHeap(int MAX);
+  minHeap(int capacity);
   ~minHeap();
-  bool heapIsEmpty() const;
-  void heapInsertItem(Food& newFood);
-  void heapDelete(Food& root);
-  const Food& peek();
+  bool isEmpty() const;
+  void insert(Food& foodToInsert);
+  void remove(Food& root);
+  const Food& getRoot();
 
   protected:
-  void heapRebuild(int root);
+  void heapify(int root);
 };
 
 #endif

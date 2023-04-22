@@ -1,74 +1,66 @@
 #include"maxHeap.h"
 
-maxHeap::maxHeap(int MAX) {
-  MAX_SIZE = MAX;
-  foods = new Food[MAX_SIZE];
+maxHeap::maxHeap(int capacity) {
+  foods = new Food[capacity];
   size = 0;
+  this -> capacity = capacity;
 };
 
 maxHeap::~maxHeap() {
   delete[] foods;
 }
 
-bool maxHeap::heapIsEmpty() const {
+bool maxHeap::isEmpty() const {
   return size == 0;
 };
 
-void maxHeap::heapInsertItem(Food& newFood) {
-  if (size >= MAX_SIZE) return;
+void maxHeap::insert(Food& foodToInsert) {
+  if (size < capacity){
+    foods[size] = foodToInsert;
+    int index = size;
+    int parent = (index - 1) / 2;
+    while (index > 0 && foods[index].getQuality() > foods[parent].getQuality()) {
+      Food temp = foods[index];
+      foods[index] = foods[parent];
+      foods[parent] = temp;  
 
-  foods[size] = newFood;
-  // trickle the new item up to its proper position
-  int place = size;
-  int parent = (place - 1) / 2;
-  while (place > 0 && foods[place].getFoodQuality() > foods[parent].getFoodQuality()) {
-    Food temp = foods[place];
-    foods[place] = foods[parent];
-    foods[parent] = temp;  
-
-    place = parent;
-    parent = (place - 1) / 2;
-
+      index = parent;
+      parent = (index - 1) / 2;
+    }
+    size++;
   }
-  size++;
 };
 
-void maxHeap::heapDelete(Food& root) {
+void maxHeap::remove(Food& root) {
   root = foods[0];
   foods[0] = foods[--size];
-  heapRebuild(0);
+  heapify(0);
 };
 
-const Food& maxHeap::peek() {
+const Food& maxHeap::getRoot() {
   return foods[0];
 }
   
-void maxHeap::heapRebuild(int root) {
-  // index of root's left child
-  int child = 2 * root + 1;
+void maxHeap::heapify(int root) {
+  int leftChild= 2 * root + 1;
   
-  // root is not a leaf so it has a left child 
-  if (child < size) {
-    int rightChild = child + 1;
+  // root is not a leaf so it has a left leftChild
+  if (leftChild< size) {
+    int rightChild = leftChild+ 1;
     
-    // if root has a right child, find the larger child 
+    // if root has a right child, find the larger leftChild
     if (rightChild < size && (
-      foods[child].getFoodQuality() < foods[rightChild].getFoodQuality() ||
-      foods[child].getFoodQuality() == foods[rightChild].getFoodQuality() && foods[child].getFoodId() > foods[rightChild].getFoodId()
+      foods[leftChild].getQuality() < foods[rightChild].getQuality() ||
+      foods[leftChild].getQuality() == foods[rightChild].getQuality() && foods[leftChild].getId() > foods[rightChild].getId()
     )) {
-      child = rightChild;
+      leftChild= rightChild;
     }
 
-    if (foods[root].getFoodQuality() < foods[child].getFoodQuality()) {
+    if (foods[root].getQuality() < foods[leftChild].getQuality()) {
       Food temp = foods[root];
-      foods[root] = foods[child];
-      foods[child] = temp;
-      heapRebuild(child);
+      foods[root] = foods[leftChild];
+      foods[leftChild] = temp;
+      heapify(leftChild);
     }
   }
 };
-
-Food* maxHeap::getArray(int& m_size) {
-  m_size = size;
-  return foods;
-}

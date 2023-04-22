@@ -4,89 +4,78 @@
 #include"Creature.h"
 #include"Food.h"
 
+using namespace std;
+
 
 Creature::Creature() {}
 
-Creature::Creature(int id, double x, double y, int newHealth) {
-  creatureId = id;
-  health = newHealth;
-  origin.moveTo(x, y);
+Creature::~Creature() {}
+
+Creature::Creature(int id, double x, double y, int health) {
+  this -> id  = id;
+  point.moveTo(x, y);
+  this -> health = health;
 }
 
 Creature::Creature(const Creature& copy) {
-  origin = copy.origin;
+  id = copy.id;
+  point = copy.point;
   health = copy.health;
-  creatureId = copy.creatureId;
 }
 
-Creature::~Creature() {}
-
-const Point2D& Creature::getCoordinate() const {
-  return origin;
+const Point2D& Creature::getPoint() const {
+  return point;
 }
 
 const int Creature::getHealth() const {
   return health;
 }
 
-const int Creature::getCreatureId() const {
-  return creatureId;
+double Creature::distanceBetween(const Creature& creature) const {
+  return point.hypotenuse(creature.point);
 }
 
-double Creature::distanceFromCreature(const Creature& creature) const {
-  return origin.distanceFrom(creature.origin);
-}
-
-double Creature::distanceFromFood(const Food& food) const {
-  return origin.distanceFrom(food.getCoordinate());
-}
-
-void Creature::increaseHealth(int increaseBy) {
-  health += increaseBy;
-}
-
-void Creature::decrementHealth(){
-  health --;
-}
-
-void Creature::die() {
-  health = 0;
+double Creature::distanceBetween(const Food& food) const {
+  return point.hypotenuse(food.getPoint());
 }
 
 bool Creature::isAlive() const {
   return health > 0;
 }
 
-void Creature::moveForGameLoop(Vector& v, Point2D& p) {
-  if (!isAlive()) return;
-
-  double moveXDir = v.x;
-  if (moveXDir != 0.) {
-    moveXDir = v.x > 0 ? 1 : -1;
-  }
-
-  double moveYDir = v.y;
-  if (moveYDir != 0) {
-    moveYDir = v.y > 0 ? 1 : -1;
-  }
-
-  double d1;
-  double d2 = origin.distanceFrom(p);
-
-  if (health <= 10) {
-    d1 = 1;
-  } else {
-    // d1 = (10.0 / static_cast<double>(health));
-    d1 = 10.0 / health;
-  }
-
-  double x1 = moveXDir * ((d1 / d2) * std::abs(origin.x - p.x));
-  double y1 = moveYDir * ((d1 / d2) * std::abs(origin.y - p.y));
-
-  origin.moveTo(origin.x+x1, origin.y+y1);  
+void Creature::regainHealth(int h) {
+  health += h;
 }
 
-std::ostream& operator<<(std::ostream& outstream, Creature& creature) {
-  outstream << "Creature " << creature.creatureId << ": " << creature.origin;
-  return outstream;
+void Creature::decrementHealth(){
+  health --;
+}
+
+void Creature::killCreature() {
+  health = 0;
+}
+
+void Creature::advance(Point2D& v, Point2D& p) {
+  if (isAlive()) {
+    double xDistance = v.getX();
+    double yDistance = v.getY();
+    if (xDistance != 0) {
+      xDistance = v.getX() > 0 ? 1 : -1;
+    }
+    if (yDistance != 0) {
+      yDistance = v.getY() > 0 ? 1 : -1;
+    }
+
+    double hypotenuseP = point.hypotenuse(p);
+    double moveSpeed = health <= 10 ? 1 : 10.0 / health;
+    double moveX = ((moveSpeed / hypotenuseP) * xDistance * abs(point.getX() - p.getX()));
+    double moveY = ((moveSpeed / hypotenuseP) * yDistance * abs(point.getY() - p.getY()));
+
+    point.moveTo(point.getX() + moveX, point.getY() + moveY);  
+  }
+}
+
+ostream& operator<<(ostream& o, Creature& c) {
+  o << "Creature " << c.id << ": " << c.point;
+  return o;
 }

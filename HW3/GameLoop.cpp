@@ -33,20 +33,13 @@ void GameLoop::initCreatures(const std::vector<std::string>& creaturesFromTxt) {
     while (std::getline(currentStream, data[i], ',')) {
       i++;
     }
-    int creatureId = std::stoi(data[0]);
-
-
-
-
-
+    int id = std::stoi(data[0]);
     double x = std::stod(data[1]);
     double y = std::stod(data[2]);
-
-
     int health = std::stoi(data[3]);
     delete[] data;
 
-    Creature temp(creatureId, x, y, health);
+    Creature temp(id, x, y, health);
     creatures.push_back(temp);
   }
 }
@@ -60,14 +53,14 @@ void GameLoop::initSpawnHeap(const std::vector<std::string>& foodsFromTxt) {
     while (std::getline(currentStream, data[i], ',')) {
       i++;
     }
-    int foodId = std::stoi(data[0]);
+    int id  = std::stoi(data[0]);
     double x = std::stod(data[1]);
     double y = std::stod(data[2]);
     int quality = std::stoi(data[3]);
     int spawnTime = std::stoi(data[4]);
     delete[] data;
-    Food tempFood(foodId, x, y, quality, spawnTime);
-    foodToSpawn->heapInsertItem(tempFood);
+    Food tempFood(id , x, y, quality, spawnTime);
+    foodToSpawn->insert(tempFood);
     index++;
   }
 }
@@ -80,12 +73,12 @@ void GameLoop::printAllCreatures() {
 }
 
 void GameLoop::placeNewFood(const int spawnIteration) {
-  Food& foodToPlace = const_cast<Food&>(foodToSpawn->peek());
-  while (!foodToSpawn->heapIsEmpty() && foodToPlace.getSpawnTime() == spawnIteration) {
+  Food& foodToPlace = const_cast<Food&>(foodToSpawn->getRoot());
+  while (!foodToSpawn->isEmpty() && foodToPlace.getSpawnTime() == spawnIteration) {
     Food temp;
-    foodToSpawn->heapDelete(temp);
-    foodSpawned->heapInsertItem(temp);
-    if (!foodToSpawn->heapIsEmpty()) foodToPlace = const_cast<Food&>(foodToSpawn->peek());
+    foodToSpawn->remove(temp);
+    foodSpawned->insert(temp);
+    if (!foodToSpawn->isEmpty()) foodToPlace = const_cast<Food&>(foodToSpawn->getRoot());
   }
 }
 
@@ -94,10 +87,10 @@ void GameLoop::resolveFights() {
     if (creatureInAction->isAlive()) {
       for (auto otherCreature = creatures.begin(); otherCreature != creatures.end(); otherCreature++) {
         if (otherCreature == creatureInAction) continue;
-        double distanceBetween = creatureInAction->distanceFromCreature(*otherCreature);
+        double distanceBetween = creatureInAction->distanceBetween(*otherCreature);
         if (distanceBetween <= 2) {
           if (otherCreature->getHealth() <= creatureInAction->getHealth()) {
-            otherCreature->die();
+            otherCreature->killCreature();
           }
         }
       }
@@ -106,24 +99,24 @@ void GameLoop::resolveFights() {
 }
 
 void GameLoop::consumeFood() {
-  if (!foodSpawned->heapIsEmpty()) {
-    Food& bestFood = const_cast<Food&>(foodSpawned->peek());  
+  if (!foodSpawned->isEmpty()) {
+    Food& bestFood = const_cast<Food&>(foodSpawned->getRoot());  
     for (auto currentCreature = creatures.begin(); currentCreature != creatures.end(); currentCreature++ ) {
-      if (!foodSpawned->heapIsEmpty() && currentCreature->isAlive() && currentCreature->distanceFromFood(bestFood) <= 1) {
+      if (!foodSpawned->isEmpty() && currentCreature->isAlive() && currentCreature->distanceBetween(bestFood) <= 1) {
         Food temp;
-        foodSpawned->heapDelete(temp);
-        currentCreature->increaseHealth(temp.getFoodQuality());
-        if (!foodSpawned->heapIsEmpty()) bestFood = const_cast<Food&>(foodSpawned->peek());
+        foodSpawned->remove(temp);
+        currentCreature->regainHealth(temp.getQuality());
+        if (!foodSpawned->isEmpty()) bestFood = const_cast<Food&>(foodSpawned->getRoot());
       }
     }
       
-    if (!foodSpawned->heapIsEmpty()) {
+    if (!foodSpawned->isEmpty()) {
       for (auto currentCreature = creatures.begin(); currentCreature != creatures.end(); currentCreature++) {
-        if (currentCreature->isAlive() && currentCreature->distanceFromFood(bestFood) > 1) {
-          Point2D origin = currentCreature->getCoordinate();
-          Point2D foodPosition = bestFood.getCoordinate();
-          Vector directionToMove = origin.getVectorTo(foodPosition);
-          currentCreature->moveForGameLoop(directionToMove, foodPosition);  
+        if (currentCreature->isAlive() && currentCreature->distanceBetween(bestFood) > 1) {
+          Point2D point = currentCreature->getPoint();
+          Point2D foodPosition = bestFood.getPoint();
+          Point2D directionToMove = point.getPointTo(foodPosition);
+          currentCreature->advance(directionToMove, foodPosition);  
         }
       } 
     }

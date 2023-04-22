@@ -1,46 +1,35 @@
-#include<iostream>
-#include<stdlib.h>
-#include<time.h>
-using namespace std;
-
 #include"Food.h"
 
+using namespace std;
+
 Food::Food() {
-  origin.moveToOrigin();
-  foodId = Food::getUniqueID();
-  
-  srand(time(NULL));
-  quality = rand() % 10 + 1; // quality is between 1 and 10 inclusive 
-}
-
-Food::Food(int id, double x, double y, int newQuality, int newSpawnTime) {
-  origin.moveTo(x, y);
-  foodId = id;
-  quality = newQuality;
-  spawnTime = newSpawnTime;
-}
-
-Food::Food(const Food& other) {
-  origin = other.origin;
-  quality = other.quality;
-  foodId = other.foodId;
-  spawnTime = other.spawnTime;
+  id  = 0;
+  point.moveTo(0, 0);
+  quality = 0;
+  spawnTime = 0;
 }
 
 Food::~Food() {}
 
-int Food::getFoodId() const {
-  return foodId;
+Food::Food(int id, double x, double y, int quality, int spawnTime) {
+  this -> id  = id;
+  point.moveTo(x, y);
+  this -> quality = quality;
+  this -> spawnTime = spawnTime;
 }
 
-int Food::getFoodQuality() const {
+int Food::getId() const {
+  return id ;
+}
+
+int Food::getQuality() const {
   return quality;
-}
-
-Point2D& Food::getCoordinate() const {
-  return const_cast<Point2D&>(origin);
 }
 
 int Food::getSpawnTime() const {
   return spawnTime;
+}
+
+Point2D& Food::getPoint() const {
+  return const_cast<Point2D&>(point);
 }

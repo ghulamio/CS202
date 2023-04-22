@@ -11,65 +11,46 @@ Point2D::Point2D() {
   y = 0;
 }
 
-Point2D::Point2D(const double startingX, const double startingY) {
-    x = startingX;
-    y = startingY;
+Point2D::Point2D(const double x, const double y) {
+    this -> x = x;
+    this -> y = y;
 }
 
-Point2D::Point2D(const Point2D& from) {
-  x = from.x;
-  y = from.y;
+Point2D::Point2D(const Point2D& p) {
+  x = p.x;
+  y = p.y;
 }
 
-void Point2D::moveTo(const double ToX, const double ToY) {
-  x = ToX;
-  y = ToY;
+double Point2D::getX() const {
+  return x;
 }
 
-void Point2D::moveTo(const Point2D& to) {
-  x = to.x;
-  y = to.y;
+double Point2D::getY() const {
+  return y;
 }
 
-void Point2D::moveToOrigin() {
-  x = 0;
-  y = 0;
+double Point2D::hypotenuse(const Point2D& p) const{
+  return sqrt(pow((x - p.x), 2.0) + pow((y - p.y), 2.0));
 }
 
-bool Point2D::equal(const Point2D& checkAgainst) {
-  return x == checkAgainst.x && y == checkAgainst.y;
+bool Point2D::isEqualTo(const Point2D& p) {
+  return x == p.x && y == p.y;
 }
 
-double Point2D::distanceFrom(const Point2D& from) const{
-  double sumOfSquares = pow(static_cast<double>(x - from.x), 2.0) + pow(static_cast<double>(y - from.y), 2.0);
-  return pow(sumOfSquares, 0.5);
+Point2D Point2D::getPointTo(Point2D& p) {
+  Point2D PY;
+  PY.x = p.x - this->x;
+  PY.y = p.y - this->y;
+  return PY;
 }
 
-Vector Point2D::getVectorTo(Point2D& to) {
-  Vector AB;
-  AB.x = to.x - this->x;
-  AB.y = to.y - this->y;
-  return AB;
+void Point2D::moveTo(const double x, const double y) {
+  this -> x = x;
+  this -> y = y;
 }
 
-void Point2D::operator=(Point2D& second) {
-  moveTo(second);   
-}
-
-void Point2D::operator=(const Point2D& second) {
-  moveTo(second);
-}
-
-bool operator==(Point2D& first, Point2D& second) {
-  return first.equal(second);  
-}
-
-bool operator!=(Point2D& first, Point2D& second) {
-  return !first.equal(second);
-}
-
-std::ostream& operator<<(ostream& outstream, Point2D& p) {
-  outstream << fixed << setprecision(2);
-  outstream << p.x << ", " << p.y;
-  return outstream;
+ostream& operator<<(ostream& o, Point2D& p) {
+  o << fixed << setprecision(2);
+  o << p.x << ", " << p.y;
+  return o;
 }

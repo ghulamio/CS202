@@ -5,22 +5,21 @@
 
 class maxHeap{
   public:
-    maxHeap(int MAX);
+    maxHeap(int capacity);
     ~maxHeap();
 
-    bool heapIsEmpty() const;
-    void heapInsertItem(Food& newFood);
-    void heapDelete(Food& root);
-    const Food& peek();
+    bool isEmpty() const;
+    const Food& getRoot();
 
-    Food* getArray(int&);
+    void insert(Food& foodToInsert);
+    void remove(Food& root);
 
   private:
     Food* foods;
     int size;
-    int MAX_SIZE;
+    int capacity;
   
-  void heapRebuild(int root);
+    void heapify(int root);
 };
 
 #endif

@@ -1,9 +1,9 @@
 #include"minHeap.h"
 
 
-minHeap::minHeap(int MAX) {
-  MAX_SIZE = MAX;
-  foods = new Food[MAX_SIZE];
+minHeap::minHeap(int capacity) {
+  this -> capacity = capacity;
+  foods = new Food[capacity];
   size = 0;
 };
 
@@ -11,54 +11,54 @@ minHeap::~minHeap() {
   delete[] foods;
 }
 
-bool minHeap::heapIsEmpty() const {
+bool minHeap::isEmpty() const {
   return size == 0;
 };
 
-void minHeap::heapInsertItem(Food& newFood) {
-  if (size >= MAX_SIZE) return;
+void minHeap::insert(Food& foodToInsert) {
+  // if (size >= capacity) return;
+  if (size < capacity) {
+    foods[size] = foodToInsert;
+    int index = size;
+    int parent = (index - 1) / 2;
+    while (index > 0 && foods[index].getSpawnTime() < foods[parent].getSpawnTime()) {
+      Food temp = foods[index];
+      foods[index] = foods[parent];
+      foods[parent] = temp;  
 
-  foods[size] = newFood;
-  // trickle the new item up to its proper position
-  int place = size;
-  int parent = (place - 1) / 2;
-  while (place > 0 && foods[place].getSpawnTime() < foods[parent].getSpawnTime()) {
-    Food temp = foods[place];
-    foods[place] = foods[parent];
-    foods[parent] = temp;
-    place = parent;
-    parent = (place - 1) / 2;
+      index = parent;
+      parent = (index - 1) / 2;
+    }
+    size++;
   }
-
-  size++;
 };
 
-void minHeap::heapDelete(Food& root) {
+void minHeap::remove(Food& root) {
   root = foods[0];
   foods[0] = foods[--size];
-  heapRebuild(0);
+  heapify(0);
 };
 
-const Food& minHeap::peek() {
+const Food& minHeap::getRoot() {
   return foods[0];
 }
 
   
-void minHeap::heapRebuild(int root) {
-  int child = 2 * root + 1;
+void minHeap::heapify(int root) {
+  int leftChild= 2 * root + 1;
   
-  if (child < size) {
-    int rightChild = child + 1;
+  if (leftChild< size) {
+    int rightChild = leftChild+ 1;
     
-    if (rightChild < size && foods[child].getSpawnTime() > foods[rightChild].getSpawnTime()) {
-      child = rightChild;
+    if (rightChild < size && foods[leftChild].getSpawnTime() > foods[rightChild].getSpawnTime()) {
+      leftChild= rightChild;
     }
 
-    if (foods[root].getSpawnTime() > foods[child].getSpawnTime()) {
+    if (foods[root].getSpawnTime() > foods[leftChild].getSpawnTime()) {
       Food temp = foods[root];
-      foods[root] = foods[child];
-      foods[child] = temp;
-      heapRebuild(child);
+      foods[root] = foods[leftChild];
+      foods[leftChild] = temp;
+      heapify(leftChild);
     }
   }
 };
