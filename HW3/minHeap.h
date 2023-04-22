@@ -4,22 +4,22 @@
 #include"Food.h"
 
 class minHeap{
-  private:
-  Food* foods;
-  int size;
-  int capacity;
-
   public:
-  minHeap() = default;
-  minHeap(int capacity);
-  ~minHeap();
-  bool isEmpty() const;
-  void insert(Food& foodToInsert);
-  void remove(Food& root);
-  const Food& getRoot();
+    minHeap(int capacity);
+    ~minHeap();
 
-  protected:
-  void heapify(int root);
+    bool isEmpty() const;
+    const Food& getRoot();
+
+    void insert(Food& foodToInsert);
+    void remove(Food& root);
+
+  private:
+    Food* foods;
+    int size;
+    int capacity;
+    
+    void heapify(int root);
 };
 
 #endif

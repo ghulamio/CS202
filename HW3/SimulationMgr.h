@@ -1,15 +1,17 @@
-#ifndef __SIMULATIONMGR_H
-#define __SIMULATIONMGR_H
+#ifndef _SIMULATIONMGR_H
+#define _SIMULATIONMGR_H
 
 #include<string>
 
 #include"GameLoop.h"
 
+using namespace std;
+
 class SimulationMgr {
   public:
-    SimulationMgr(std::string filename);
+    SimulationMgr(string data);
     ~SimulationMgr();
-    void begin();
+    void startSimulation();
 
   private:
     GameLoop* gameLoop;

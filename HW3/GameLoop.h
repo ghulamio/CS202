@@ -1,37 +1,33 @@
-#ifndef __GameLoop_H
-#define __GameLoop_H
+#ifndef _GAMELOOP_H
+#define _GAMELOOP_H
 
 #include<vector>
 #include<string>
+
 #include"Creature.h"
 #include"minHeap.h"
 #include"maxHeap.h"
 
+using namespace std;
+
 class GameLoop{
-  private:
-  std::vector<Creature> creatures;
-  minHeap* foodToSpawn;
-  maxHeap* foodSpawned;
-
-
   public:
-  GameLoop(int);
-  ~GameLoop();
+    GameLoop(int capacity, const vector<string>& c, const vector<string>& f);
+    ~GameLoop();
 
-  void initCreatures(const std::vector<std::string>&);
-  void initSpawnHeap(const std::vector<std::string>&);
+    bool aliveCreatures() const;
 
-  void printAllCreatures();
-  void placeNewFood(const int);
-  void resolveFights();
-  void consumeFood();
-  void decrementHealths(); 
+    void creaturesOutput();
+    void spawnFood(const int);
+    void fight();
+    void eat();
+    void loseHealth(); 
 
-  bool allCreaturesDead() const;
-  
-  const std::vector<Creature>& getCreatureInfo() const;
-  maxHeap* getmaxHeap() const;
 
+  private:
+    vector<Creature> creatures;
+    minHeap* foodToSpawn;
+    maxHeap* foodSpawned;
 };
 
 #endif

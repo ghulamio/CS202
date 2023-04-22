@@ -3,60 +3,56 @@
 #include<vector>
 #include<string>
 
-
-#include"Point2D.h"
-#include"GameLoop.h"
 #include"SimulationMgr.h"
 
 using namespace std;
 
-
-SimulationMgr::SimulationMgr(string filename) {
-  ifstream inputStream;
-  inputStream.open(filename);
+SimulationMgr::SimulationMgr(string data) {
+  ifstream dataStream;
+  dataStream.open(data);
   vector<string> creatures;
   vector<string> foods;
   
-  // Process the creatures
+  // Load the creatures into a string vector
   string line1;
-  getline(inputStream, line1);
+  getline(dataStream, line1);
   int N = stoi(line1);
   for (int i = 0; i < N; i++) {
-    string inputCreature;
-    getline(inputStream, inputCreature);
-    creatures.push_back(inputCreature);
+    string creatureData;
+    getline(dataStream, creatureData);
+    creatures.push_back(creatureData);
   }
 
-  // Process the foods
-  while (inputStream) {
-    string inputFoods;
-    getline(inputStream, inputFoods);
-    if (inputFoods.find(",") != string::npos)
-      foods.push_back(inputFoods);
+  // Load the foods into a string vector
+  while (dataStream) {
+    string foodData;
+    getline(dataStream, foodData);
+    if (foodData.find(",") != string::npos) { 
+      foods.push_back(foodData);
+    }
   }
 
-  gameLoop = new GameLoop(foods.size());
-  gameLoop->initCreatures(creatures);
-  gameLoop->initSpawnHeap(foods);
+  gameLoop = new GameLoop(foods.size(), creatures, foods);
 }
 
 SimulationMgr::~SimulationMgr() {
   delete gameLoop;
 }
 
-void SimulationMgr::begin() {
-  int GameLoopIteration = 0;
-  while (!gameLoop->allCreaturesDead()) {
-    gameLoop->printAllCreatures();    
-    gameLoop->placeNewFood(GameLoopIteration);
-    gameLoop->resolveFights();
-    gameLoop->consumeFood();
-    gameLoop->decrementHealths();
-    GameLoopIteration++;
+void SimulationMgr::startSimulation() {
+  int loop = 0;
+  while (gameLoop->aliveCreatures()) {
+    gameLoop->creaturesOutput();    
+    gameLoop->spawnFood(loop);
+    gameLoop->fight();
+    gameLoop->eat();
+    gameLoop->loseHealth();
+    loop++;
   }  
 }
 
 int main(int argc, const char** argv) {
-  SimulationMgr mgr(argv[1]);
-  mgr.begin();
+  SimulationMgr s(argv[1]);
+  s.startSimulation();
+  return 0;
 }

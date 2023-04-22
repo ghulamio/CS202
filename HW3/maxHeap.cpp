@@ -44,15 +44,10 @@ const Food& maxHeap::getRoot() {
 void maxHeap::heapify(int root) {
   int leftChild= 2 * root + 1;
   
-  // root is not a leaf so it has a left leftChild
   if (leftChild< size) {
     int rightChild = leftChild+ 1;
     
-    // if root has a right child, find the larger leftChild
-    if (rightChild < size && (
-      foods[leftChild].getQuality() < foods[rightChild].getQuality() ||
-      foods[leftChild].getQuality() == foods[rightChild].getQuality() && foods[leftChild].getId() > foods[rightChild].getId()
-    )) {
+    if (rightChild < size && foods[leftChild].getQuality() < foods[rightChild].getQuality()) {
       leftChild= rightChild;
     }
 

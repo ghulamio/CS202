@@ -1,10 +1,9 @@
 #include"minHeap.h"
 
-
 minHeap::minHeap(int capacity) {
-  this -> capacity = capacity;
   foods = new Food[capacity];
   size = 0;
+  this -> capacity = capacity;
 };
 
 minHeap::~minHeap() {
@@ -16,7 +15,6 @@ bool minHeap::isEmpty() const {
 };
 
 void minHeap::insert(Food& foodToInsert) {
-  // if (size >= capacity) return;
   if (size < capacity) {
     foods[size] = foodToInsert;
     int index = size;
@@ -49,11 +47,9 @@ void minHeap::heapify(int root) {
   
   if (leftChild< size) {
     int rightChild = leftChild+ 1;
-    
     if (rightChild < size && foods[leftChild].getSpawnTime() > foods[rightChild].getSpawnTime()) {
       leftChild= rightChild;
     }
-
     if (foods[root].getSpawnTime() > foods[leftChild].getSpawnTime()) {
       Food temp = foods[root];
       foods[root] = foods[leftChild];
