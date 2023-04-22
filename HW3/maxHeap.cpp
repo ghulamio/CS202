@@ -1,3 +1,11 @@
+/**
+* Author : Ghulam Ahmed
+* ID: 22101001
+* Section : 2
+* Homework : 3
+* Description : Homework 3 - Heaps and Priority Queues
+*/
+
 #include"maxHeap.h"
 
 maxHeap::maxHeap(int capacity) {
@@ -10,8 +18,8 @@ maxHeap::~maxHeap() {
   delete[] foods;
 }
 
-bool maxHeap::isEmpty() const {
-  return size == 0;
+bool maxHeap::isOccupied() const {
+  return size > 0;
 };
 
 void maxHeap::insert(Food& foodToInsert) {

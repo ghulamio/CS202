@@ -1,3 +1,11 @@
+/**
+* Author : Ghulam Ahmed
+* ID: 22101001
+* Section : 2
+* Homework : 3
+* Description : Homework 3 - Heaps and Priority Queues
+*/
+
 #include"minHeap.h"
 
 minHeap::minHeap(int capacity) {
@@ -10,8 +18,8 @@ minHeap::~minHeap() {
   delete[] foods;
 }
 
-bool minHeap::isEmpty() const {
-  return size == 0;
+bool minHeap::isOccupied() const {
+  return size > 0;
 };
 
 void minHeap::insert(Food& foodToInsert) {

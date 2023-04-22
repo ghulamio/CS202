@@ -1,3 +1,11 @@
+/**
+* Author : Ghulam Ahmed
+* ID: 22101001
+* Section : 2
+* Homework : 3
+* Description : Homework 3 - Heaps and Priority Queues
+*/
+
 #ifndef _FOOD_H
 #define _FOOD_H
 
@@ -13,7 +21,6 @@ class Food{
 
     Point2D& getPoint() const;
 
-    int getId() const;
     int getQuality() const;
     int getSpawnTime() const;
 

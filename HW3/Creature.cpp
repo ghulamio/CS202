@@ -1,3 +1,11 @@
+/**
+* Author : Ghulam Ahmed
+* ID: 22101001
+* Section : 2
+* Homework : 3
+* Description : Homework 3 - Heaps and Priority Queues
+*/
+
 #include<iostream>
 #include <cmath>
 
@@ -5,11 +13,6 @@
 #include"Food.h"
 
 using namespace std;
-
-
-Creature::Creature() {}
-
-Creature::~Creature() {}
 
 Creature::Creature(int id, double x, double y, int health) {
   this -> id  = id;
@@ -31,12 +34,8 @@ const int Creature::getHealth() const {
   return health;
 }
 
-double Creature::distanceBetween(const Creature& creature) const {
-  return point.hypotenuse(creature.point);
-}
-
-double Creature::distanceBetween(const Food& food) const {
-  return point.hypotenuse(food.getPoint());
+bool Creature::isNotHealthier(const Creature& creature) const {
+  return health <= creature.health;
 }
 
 bool Creature::isAlive() const {

@@ -1,7 +1,13 @@
+/**
+* Author : Ghulam Ahmed
+* ID: 22101001
+* Section : 2
+* Homework : 3
+* Description : Homework 3 - Heaps and Priority Queues
+*/
+
 #include<iostream>
 #include<fstream>
-#include<vector>
-#include<string>
 
 #include"SimulationMgr.h"
 

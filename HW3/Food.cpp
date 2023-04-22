@@ -1,3 +1,11 @@
+/**
+* Author : Ghulam Ahmed
+* ID: 22101001
+* Section : 2
+* Homework : 3
+* Description : Homework 3 - Heaps and Priority Queues
+*/
+
 #include"Food.h"
 
 using namespace std;
@@ -16,10 +24,6 @@ Food::Food(int id, double x, double y, int quality, int spawnTime) {
   point.moveTo(x, y);
   this -> quality = quality;
   this -> spawnTime = spawnTime;
-}
-
-int Food::getId() const {
-  return id ;
 }
 
 int Food::getQuality() const {
