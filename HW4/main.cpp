@@ -1,5 +1,7 @@
 #include <iostream>
 #include <string>
+#include <vector>
+#include <sstream>
 
 #include "AccompanimentHashing.h"
 #include "SnackHashing.h"
@@ -7,24 +9,34 @@
 using namespace std;
 
 
-int main() {
+int main(int argc, char* argv[]) {
+  if (argc < 2) {
+    cout << "No commands given" << endl;
+    return 0;
+  }
+
   SnackHashing snackHashing;
   AccompanimentHashing accompanimentHashing;
 
-  while (true) {
-    string command;
-    cin >> command;
+  string commands = argv[1];
+  size_t pos = 0;
+  string delimiter = "\n";
+  commands += "\n";
 
-    if (command == "S") {
-      string name;
-      cin >> name;
+  while ((pos = commands.find(delimiter)) != string::npos) {
+    string command = commands.substr(0, pos);
+    commands.erase(0, pos + delimiter.length());
+
+    if (command[0] == 'S') {
+      string name = command.substr(2);
 
       Snack* snack = new Snack(name);
       snackHashing.addSnack(snack);
       cout << "Snack '" << name << "' created" << endl;
-    } else if (command == "C") {
-      string snack1, snack2;
-      cin >> snack1 >> snack2;
+    } else if (command[0] == 'C') {
+      stringstream ss(command);
+      string c, snack1, snack2;
+      ss >> c >> snack1 >> snack2;
 
       Snack* snackA = snackHashing.getSnack(snack1);
       Snack* snackB = snackHashing.getSnack(snack2);
@@ -42,9 +54,10 @@ int main() {
       } else {
         cout << "Snack '" << snack1 << "' or '" << snack2 << "' does not exist" << endl;
       }
-    } else if (command == "D") {
-      string snack1, snack2;
-      cin >> snack1 >> snack2;
+    } else if (command[0] == 'D') {
+      stringstream ss(command);
+      string c, snack1, snack2;
+      ss >> c >> snack1 >> snack2;
 
       Snack* snackA = snackHashing.getSnack(snack1);
       Snack* snackB = snackHashing.getSnack(snack2);
@@ -63,9 +76,10 @@ int main() {
       } else {
         cout << "Snack '" << snack1 << "' or '" << snack2 << "' does not exist" << endl;
       }
-    } else if (command == "L") {
-      string snack1;
-      cin >> snack1;
+    } else if (command[0] == 'L') {
+      stringstream ss(command);
+      string c, snack1;
+      ss >> c >> snack1;
 
       Snack* snack = snackHashing.getSnack(snack1);
 
@@ -82,9 +96,10 @@ int main() {
       } else {
         cout << "Snack '" << snack1 << "' does not exist" << endl;
       }
-    } else if (command == "Q") {
-      string snack1, snack2;
-      cin >> snack1 >> snack2;
+    } else if (command[0] == 'Q') {
+      stringstream ss(command);
+      string c, snack1, snack2;
+      ss >> c >> snack1 >> snack2;
 
       Snack* snackA = snackHashing.getSnack(snack1);
       Snack* snackB = snackHashing.getSnack(snack2);
@@ -101,12 +116,11 @@ int main() {
       } else {
         cout << "Snack '" << snack1 << "' or '" << snack2 << "' does not exist" << endl;
       }
-    } else if (command == "X") {
+    } else if (command[0] == 'X') {
       break;
     } else {
       cout << "Invalid command" << endl;
     }
   }
-
   return 0;
 }
